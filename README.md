@@ -136,6 +136,12 @@ asserting on what an actual run reports. The load-bearing test is
 `test_a_test_that_cannot_fail_is_rejected`: a plugin that never refuses anything would pass every
 other test in the file.
 
+## Documentation
+
+| | |
+|---|---|
+| [`SCOPE.md`](SCOPE.md) | what a mutation-verified test establishes, and what it does not |
+
 ## The rest of the toolkit
 
 | | |

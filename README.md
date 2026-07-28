@@ -1,8 +1,8 @@
 # pytest-mutation-verified
 
 [![ci](https://github.com/nickharris808/pytest-mutation-verified/actions/workflows/ci.yml/badge.svg)](https://github.com/nickharris808/pytest-mutation-verified/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/pytest-mutation-verified.svg)](https://pypi.org/project/pytest-mutation-verified/)
-[![Python](https://img.shields.io/pypi/pyversions/pytest-mutation-verified.svg)](https://pypi.org/project/pytest-mutation-verified/)
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
+[![status](https://img.shields.io/badge/status-pre--release-orange.svg)](#install)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
 **Your regression test has never failed. Are you sure it can?**
@@ -16,9 +16,13 @@ costs CI time and buys nothing.
 
 This plugin makes the missing step mandatory.
 
+<a id="install"></a>
+```bash
+pip install "pytest-mutation-verified@git+https://github.com/nickharris808/pytest-mutation-verified@main"
 ```
-pip install pytest-mutation-verified
-```
+
+> **Pre-release.** The PyPI name is reserved and publication is imminent; until then the line above
+> is the working install. It is tested in CI on Linux, macOS, and Windows.
 
 ## 30-second quickstart
 
@@ -131,6 +135,19 @@ pytest
 asserting on what an actual run reports. The load-bearing test is
 `test_a_test_that_cannot_fail_is_rejected`: a plugin that never refuses anything would pass every
 other test in the file.
+
+## The rest of the toolkit
+
+| | |
+|---|---|
+| **[certkit](https://github.com/nickharris808/certkit)** | the certificate format and the independent checker |
+| **[exploit-counter](https://github.com/nickharris808/exploit-counter)** | if a guard is unsound, exactly how many states escape |
+| **[crs-mcp](https://github.com/nickharris808/crs-mcp)** | the verdict surface AI coding agents call, over MCP |
+| **[soundnessbench](https://github.com/nickharris808/soundnessbench)** | the benchmark that grades all of the above |
+| **[certkit-action](https://github.com/nickharris808/certkit-action)** | run the check in your CI |
+| **[pytest-mutation-verified](https://github.com/nickharris808/pytest-mutation-verified)** | prove your regression test can actually fail |
+| **[cve-proof-corpus](https://huggingface.co/datasets/nickh007/cve-proof-corpus)** | six real CVEs with machine-checkable proofs |
+| **[Try it in your browser](https://huggingface.co/spaces/nickh007/certkit-demo)** | no install; watch a forgery get refused |
 
 ## License
 

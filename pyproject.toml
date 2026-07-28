@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pytest-mutation-verified"
+version = "0.1.0"
+description = "A regression test is not admitted until it has been observed to fail against the defect it catches."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+keywords = ["pytest", "testing", "mutation-testing", "regression", "quality"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Framework :: Pytest",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Topic :: Software Development :: Testing",
+]
+dependencies = ["pytest>=7.0"]
+
+[project.entry-points.pytest11]
+mutation_verified = "pytest_mutation_verified.plugin"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pytest_mutation_verified"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

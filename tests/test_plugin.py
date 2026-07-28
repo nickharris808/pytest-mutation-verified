@@ -272,3 +272,75 @@ def test_require_all_counts_a_parametrised_test_once(pytester: pytest.Pytester):
     result = pytester.runpytest("--mutation-require-all")
     assert result.ret != 0
     result.stdout.fnmatch_lines(["*1 test(s) carry no mutation marker*"])
+
+
+def test_a_skipped_test_does_not_warn(pytester: pytest.Pytester):
+    """Installing this plugin must not change how unrelated tests report.
+
+    The plugin wraps *every* test function, marked or not. Reading the wrapped
+    outcome re-raised `Skipped` inside hookwrapper teardown, so a project that
+    merely had this plugin installed got a PluggyTeardownRaisedWarning on every
+    skip -- and an error, for anyone running `filterwarnings = error`.
+    """
+    pytester.makepyfile(
+        """
+        import pytest
+
+        def test_skips():
+            pytest.skip("unrelated to mutation verification")
+        """
+    )
+    result = pytester.runpytest("-W", "error::pytest.PytestWarning")
+    result.assert_outcomes(skipped=1)
+    assert "PluggyTeardownRaisedWarning" not in result.stdout.str()
+
+
+def test_an_unmarked_failure_still_fails(pytester: pytest.Pytester):
+    """The other half of the same change: not reading the outcome must not
+    swallow it. pluggy propagates the result itself; this proves it."""
+    pytester.makepyfile(
+        """
+        def test_fails():
+            assert 1 == 2
+        """
+    )
+    pytester.runpytest().assert_outcomes(failed=1)
+
+
+def test_an_unmarked_error_still_errors(pytester: pytest.Pytester):
+    """A non-assertion exception must surface too, not vanish into the wrapper."""
+    pytester.makepyfile(
+        """
+        def test_raises():
+            raise RuntimeError("boom")
+        """
+    )
+    result = pytester.runpytest()
+    result.assert_outcomes(failed=1)
+    result.stdout.fnmatch_lines(["*RuntimeError: boom*"])
+
+
+def test_a_marked_test_that_skips_is_not_reported_as_verified(pytester: pytest.Pytester):
+    """A skip during the mutated run counts as `detected` -- the test did stop.
+
+    That is a judgement call worth pinning down: the run raised, so the mutated
+    phase saw a non-pass. What must NOT happen is the real run then being
+    reported as passed when it skipped.
+    """
+    pytester.makepyfile(
+        """
+        import pytest
+        from pytest_mutation_verified import mutation_verified
+        from pytest_mutation_verified.example_pkg import read
+
+        @mutation_verified(
+            target="pytest_mutation_verified.example_pkg.check_bounds",
+            returns=True,
+        )
+        def test_skips_itself():
+            pytest.skip("environment not available")
+        """
+    )
+    result = pytester.runpytest()
+    result.assert_outcomes(skipped=1)
+    assert "passed" not in result.stdout.str().split("=====")[-1]

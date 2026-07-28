@@ -130,8 +130,13 @@ def pytest_addoption(parser: pytest.Parser) -> None:
 def pytest_pyfunc_call(pyfuncitem: pytest.Function):
     specs: list[MutationSpec] = list(getattr(pyfuncitem.function, "_mutation_specs", []))
     if not specs or pyfuncitem.config.getoption("--no-mutation-verify"):
-        outcome = yield
-        outcome.get_result()
+        # Plain `yield`, deliberately. Reading the outcome here would re-raise
+        # whatever the test did -- including a `Skipped` -- inside hookwrapper
+        # teardown, which pluggy reports as PluggyTeardownRaisedWarning. pluggy
+        # propagates the result on its own, so reading it buys nothing and makes
+        # every skipped test in a project that merely installs this plugin emit
+        # a warning (an error, under `filterwarnings = error`).
+        yield
         return
 
     testfunc = pyfuncitem.obj
@@ -182,9 +187,9 @@ def pytest_pyfunc_call(pyfuncitem: pytest.Function):
                 pytrace=False,
             )
 
-    # Mutated run(s) detected the defect; now the real run must pass.
-    outcome = yield
-    outcome.get_result()
+    # Mutated run(s) detected the defect; now the real run must pass. Its outcome
+    # is pluggy's to propagate -- see the note above.
+    yield
 
 
 def pytest_collection_modifyitems(session, config, items) -> None:

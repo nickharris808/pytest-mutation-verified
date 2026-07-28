@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pytest-mutation-verified"
-version = "0.1.0"
+version = "0.1.1"
 description = "A regression test is not admitted until it has been observed to fail against the defect it catches."
 readme = "README.md"
 requires-python = ">=3.9"

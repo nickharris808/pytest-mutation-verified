@@ -2,5 +2,5 @@
 
 from .plugin import MutationSpec, mutation_verified
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __all__ = ["mutation_verified", "MutationSpec", "__version__"]

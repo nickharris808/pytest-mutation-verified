@@ -131,7 +131,7 @@ pip install -e ".[dev]"
 pytest
 ```
 
-15 tests, run through pytest's own `pytester` fixture — real pytest sessions in a temp directory,
+32 tests, run through pytest's own `pytester` fixture — real pytest sessions in a temp directory,
 asserting on what an actual run reports. The load-bearing test is
 `test_a_test_that_cannot_fail_is_rejected`: a plugin that never refuses anything would pass every
 other test in the file.

@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "pytest-mutation-verified: proving a regression test can fail"
+abstract: >-
+  Reintroduces the defect a test claims to catch and asserts the test notices.
+type: software
+authors:
+  - alias: nickharris808
+    website: "https://github.com/nickharris808"
+repository-code: "https://github.com/nickharris808/pytest-mutation-verified"
+url: "https://nickharris808.github.io/certified-discovery/"
+license: Apache-2.0
+date-released: "2026-07-28"
+keywords:
+  - formal verification
+  - proof-carrying code
+  - Farkas certificate
+  - static analysis
+  - software security
